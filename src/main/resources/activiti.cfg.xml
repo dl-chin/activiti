@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/contex
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--配置数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/jazz"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+        <property name="maxActive" value="10"/>
+        <property name="maxIdle" value="4"/>
+    </bean>
+    <!--配置流程引擎对象，默认方式下 bean的id，固定processEngineConfiguration-->
+    <bean id="processEngineConfiguration"
+          class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
+        <!--引入上面配置的数据库链接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--actviti数据库表在生成时的策略，支持多种方式 true,false,create-drop,drop-create
+         默认是false 不会自动创建表；推荐是true常用的是如果数据库中已经存在相应的表，那直接使用，如果不存在，则会创建-->
+        <property name="databaseSchemaUpdate" value="true"/>
+    </bean>
+
+</beans>
